@@ -33,5 +33,11 @@ RestaurantSchema.pre('save', function (next) {
 //create Schema
 const NewRestaurantSchema = new Schema();
 
+NewRestaurantSchema.add(RestaurantSchema).add({
+    username: {
+        type: String
+    }
+});
+
 
 module.exports = mongoose.model('restaurants', NewRestaurantSchema);

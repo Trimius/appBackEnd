@@ -1,4 +1,4 @@
-//const Todo = require('../models/todo.model');
+const Todo = require('../models/todo.model');
 const jwt = require('jsonwebtoken');
 const ModelRestaurant = require('../models/restaurantsModel');
 
@@ -18,10 +18,12 @@ const getAllRestaurants = (req, res) => {
         }
     });
 };
-/*const create = (req, res, next) => {
+const createRestaurants = (req, res, next) => {
     ModelRestaurant.create({
+        user: req.body.user,
         nombreRestaurant: req.body.nombreRestaurant,
-        domicilio: req.body.domicilio,
+        adress: req.body.adress,
+        description: req.body.description
 
     }, function (err, result) {
         if (err) {
@@ -36,8 +38,8 @@ const getAllRestaurants = (req, res) => {
             })
         }
     })
-}*/
-const addRestaurants = (req, res) => {
+}
+/*const addRestaurants = (req, res) => {
     jwt.verify(req.token, 'palabra', (err, authData) => {
         if (err) {
             // error from JWT
@@ -64,17 +66,16 @@ const addRestaurants = (req, res) => {
                 });
         }
     })
-}
+}*/
 
 const deleteRestaurants = (req, res) => {
-    jwt.verify(req.token, 'palabras', (err, authData) => {
+    jwt.verify(req.token, 'palabra', (err, authData) => {
         if (err) {
             //error with JWT
             const error = {
                 success: false,
                 message: err
             }
-            res.status(401).json(error)
         } else {
             //erase data from data base
             let id = req.body._id
@@ -98,7 +99,14 @@ const deleteRestaurants = (req, res) => {
     })
 }
 
-const updateRestaurants = (req, res, next) => {
+const updateRestaurants = async (req, res, next) => {
+    // search
+    const udapteInfo = await ModelRestaurant.findOne({_id: req.params.id});
+    //set new data
+    udapteInfo.nombreRestaurant = req.body.nombreRestaurant;
+    const result = await udapteInfo.save();
+    res.json(result);
+    /*
     ModelRestaurant.findById(req.params.id, function (err, todo) {
         if (!todo) {
             const error = {
@@ -109,7 +117,7 @@ const updateRestaurants = (req, res, next) => {
         }
         else
             todo.todo_description = req.body.todo_description;
-        todo.save().then(todo => {
+        ModelRestaurant.save().then(todo => {
             res.status(200).json({
                 success: true,
                 message: 'Todo updated!'
@@ -121,12 +129,13 @@ const updateRestaurants = (req, res, next) => {
                     message: "Update not possible"
                 });
             });
-    });
+    }); */
 }
 
 module.exports = {
+    createRestaurants,
     getAllRestaurants,
     deleteRestaurants,
-    addRestaurants,
+    //addRestaurants,
     updateRestaurants
 }

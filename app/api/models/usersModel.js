@@ -26,11 +26,11 @@ UserSchema.pre('save', function (next) {
 // create Schema
 const NewUserSchema = new Schema();
 // add old schema and add new field
-/*NewUserSchema.add(UserSchema).add({
+NewUserSchema.add(UserSchema).add({
     username: {
         type: String
     }
-});*/
+});
 
 // assign new user schema
 module.exports = mongoose.model('User', NewUserSchema);

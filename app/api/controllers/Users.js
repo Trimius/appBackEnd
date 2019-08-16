@@ -24,7 +24,7 @@ const create = (req, res, next) => {
 }
 
 
-/*const anotherCreate = (req, res, next) => {
+const anotherCreate = (req, res, next) => {
     const newUser = new userModel(req.body);
     newUser.save().then((data) => {
         res.status(200).json({
@@ -37,7 +37,7 @@ const create = (req, res, next) => {
             message: 'Cannot Register this user now, try another one'
         })
     })
-}*/
+}
 const login = (req, res, next) => {
     const user = {
         email: req.body.email,
@@ -78,6 +78,6 @@ const login = (req, res, next) => {
 
 module.exports = {
     create,
-    //anotherCreate,
+    anotherCreate,
     login
 }
